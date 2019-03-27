@@ -1,7 +1,7 @@
 import os, sys
 import csv
 from openpyxl import load_workbook
-import glob
+from glob import glob
 
 def read_labels(filename = 'data/label.csv'):
     print('read labels ---')
@@ -38,18 +38,25 @@ def corpus2raw(corpus, labels, start_number = 0):
             f.write(i)
             f.close
         start_number += 1
-def feature_extract(input_file = '../data/corpus.txt'):
+def feature_extract(glob_condition = ''):
+    sentences = []
+    for i in glob(glob_condition):
+        sentences.append(i.split('/')[-1])
+        print(sentences[-1])
+
     os.chdir('./bert')
-    command = 'python3 extract_features.py --input_file=../data/raw/0.sentence \
-            --output_file=../data/features/0.json\
+    for i in sentences:
+        print(i.split('.')[0])
+        command = 'python3 extract_features.py --input_file=../data/raw/%s \
+            --output_file=../data/features/%s.json\
             --vocab_file=chinese_L-12_H-768_A-12/vocab.txt \
             --bert_config_file=chinese_L-12_H-768_A-12/bert_config.json \
             --init_checkpoint=chinese_L-12_H-768_A-12/bert_model.ckpt \
             --layers=-1,-2,-3,-4 \
             --max_seq_length=128 \
-            --batch_size=8'
-    print(command)
-    os.system(command)
+            --batch_size=8' % (i, i.split('.')[0])
+        print(command)
+        os.system(command)
 
 
 if __name__ == '__main__':
@@ -59,4 +66,4 @@ if __name__ == '__main__':
     corpus2txt(corpus)
     corpus2raw(corpus, labels, 0)
     """
-    feature_extract()
+    feature_extract(glob_condition = 'data/raw/*.sentence')
