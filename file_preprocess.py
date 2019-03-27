@@ -3,6 +3,10 @@ import csv
 from openpyxl import load_workbook
 from glob import glob
 
+'''
+Read the labels from the file
+@filename: the .csv file containing labels
+'''
 def read_labels(filename = 'data/label.csv'):
     print('read labels ---')
     labels = []
@@ -13,6 +17,10 @@ def read_labels(filename = 'data/label.csv'):
             print(i)
     return labels
 
+'''
+Read the corpus from the file
+@filename: the .xlsx file containing corpus
+'''
 def read_corpus(filename = 'data/sinopac_967.xlsx'):
     print('read corpus ---')
     corpus = []
@@ -25,12 +33,24 @@ def read_corpus(filename = 'data/sinopac_967.xlsx'):
             print(corpus[-1])
             print('-' * 10)
     return corpus
+
+'''
+Convert corpus to .txt file
+@corpus: corpus read from the file
+'''
 def corpus2txt(corpus):
     with open('data/corpus.txt', 'w') as f:
         for i in corpus:
             f.write(i)
             f.write('\n')
         f.close()
+
+'''
+Convert corpus to raw data
+@corpus: corpus
+@labels: labels
+@start_number: the index number of raw data, e.g 0 means the first output raw data is 0, and 1 is following
+'''
 def corpus2raw(corpus, labels, start_number = 0):
     for i, j in zip(corpus, labels):
         assert(len(i) == len(j))
@@ -38,6 +58,11 @@ def corpus2raw(corpus, labels, start_number = 0):
             f.write(i)
             f.close
         start_number += 1
+
+'''
+Word embedding: Based on Bert
+@glob_condition: glob condition, eg.path/to/file/*.sentence
+'''
 def feature_extract(glob_condition = ''):
     sentences = []
     for i in glob(glob_condition):
