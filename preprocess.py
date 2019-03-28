@@ -37,8 +37,10 @@ def check_length(features, labels):
         print('feat len : %s' % str(len(i)))
         print('label len : %s' % str(len(j)))
         if(len(i) - 2 == len(j)):
+            print('Append a right data')
             x.append(i)
             y.append(j)
+    print('Now is having %s verified data' % str(len(x)))
     return x, y
 
 if __name__ == '__main__':
