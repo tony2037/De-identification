@@ -3,6 +3,8 @@ import os, sys
 from glob import glob
 from functools import cmp_to_key
 
+import tensorflow as tf
+
 def read_features(glob_condition = ''):
     print('read features' + '-' * 10)
     print('glob condition: %s' % glob_condition)
@@ -42,6 +44,16 @@ def check_length(features, labels):
             y.append(j)
     print('Now is having %s verified data' % str(len(x)))
     return x, y
+
+def data2TFRecord(features, labels, file_path):
+    writer = tf.python_io.TFRecordWriter(file_path)
+    for x, y in zip(features, labels):
+        example = tf.train.Example(features=tf.train.Features(feature={\
+                'label': tf.train.Feature(int_64_list=tf.train.Int64List(value=[y])),\
+                'feature': tf.train.Feature(float_64_list=tf.train.Float64List(value=[x]))\
+            }))
+        writer.write(example.SerializeToString())
+    writer.close()
 
 if __name__ == '__main__':
     features, tokens = read_features(glob_condition = 'data/features/*.json')
