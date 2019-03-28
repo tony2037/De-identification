@@ -53,6 +53,7 @@ Convert corpus to raw data
 '''
 def corpus2raw(corpus, labels, start_number = 0):
     for i, j in zip(corpus, labels):
+        i = i.replace('\n', ' ')
         assert(len(i) == len(j))
         with open('data/raw/%s.sentence' % str(start_number), 'w') as f:
             f.write(i)
@@ -85,10 +86,10 @@ def feature_extract(glob_condition = ''):
 
 
 if __name__ == '__main__':
-    """
+    
     labels = read_labels('data/label.csv')
     corpus = read_corpus('data/sinopac_967.xlsx')
     corpus2txt(corpus)
     corpus2raw(corpus, labels, 0)
-    """
+    
     feature_extract(glob_condition = 'data/raw/*.sentence')

@@ -28,9 +28,11 @@ def logistic_model(features, labels):
 		Y.append(np.array(j, dtype=np.float32))
 	X = np.asarray(X, dtype=np.float32)
 	Y = np.asarray(Y, dtype=np.float32)
+	print('The X and Y shape before reshape ...')
 	print(X.shape)
 	print(Y.shape)
 	X = X.reshape((X.shape[0], X.shape[1] * X.shape[2])) # Because sklearn only accept 2d input data
+	print('The shape after reshape')
 	print(X.shape)
 	model = LinearRegression()
 	model.fit(X, Y)
