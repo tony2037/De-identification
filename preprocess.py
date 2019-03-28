@@ -30,7 +30,9 @@ def read_labels(file_path = ''):
 
 def check_length(features, labels):
     for i, j in zip(features, labels):
-        assert(len(i) == len(j))
+        print('feat len : %s' % str(len(i)))
+        print('label len : %s' % str(len(j)))
+        assert(len(i) - 2 == len(j))
 
 if __name__ == '__main__':
     features = read_features(glob_condition = 'data/features/*.json')
