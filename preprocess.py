@@ -7,6 +7,7 @@ def read_features(glob_condition = ''):
     print('read features' + '-' * 10)
     print('glob condition: %s' % glob_condition)
     features = []
+    tokens = []
     target = glob(glob_condition)
     # target = sorted(target, key = lambda x:x.split('/')[-1].split('.')[-2])
     #target = sorted(target, cmp = lambda x, y: int(x.split('/')[-1].split('.')[-2]) - int(y.split('/')[-1].split('.')[-2]))
@@ -16,7 +17,8 @@ def read_features(glob_condition = ''):
         with open(i, 'r') as f:
             feat = json.loads(f.read())
             features.append(feat['vectors'])
-    return features
+            tokens.append(feat['tokens'])
+    return features, tokens
 
 def read_labels(file_path = ''):
     print('read labels' + '-' * 10)
@@ -35,6 +37,6 @@ def check_length(features, labels):
         assert(len(i) - 2 == len(j))
 
 if __name__ == '__main__':
-    features = read_features(glob_condition = 'data/features/*.json')
+    features, tokens = read_features(glob_condition = 'data/features/*.json')
     labels = read_labels(file_path = 'data/label.csv')
     check_length(features, labels)
