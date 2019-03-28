@@ -1,12 +1,18 @@
-import csv
+import csv, json
 import os, sys
 from glob import glob
+from functools import cmp_to_key
 
 def read_features(glob_condition = ''):
     print('read features' + '-' * 10)
     print('glob condition: %s' % glob_condition)
     features = []
-    for i in glob(glob_condition):
+    target = glob(glob_condition)
+    # target = sorted(target, key = lambda x:x.split('/')[-1].split('.')[-2])
+    #target = sorted(target, cmp = lambda x, y: int(x.split('/')[-1].split('.')[-2]) - int(y.split('/')[-1].split('.')[-2]))
+    target.sort(key = cmp_to_key(lambda x,y: int(x.split('/')[-1].split('.')[-2]) - int(y.split('/')[-1].split('.')[-2])))
+    for i in target:
+        print('open %s' % i)
         with open(i, 'r') as f:
             feat = json.loads(f.read())
             features.append(feat['vectors'])
@@ -27,6 +33,6 @@ def check_length(features, labels):
         assert(len(i) == len(j))
 
 if __name__ == '__main__':
-    features = read_features(glob_condition = 'data/features/*.sentence')
+    features = read_features(glob_condition = 'data/features/*.json')
     labels = read_labels(file_path = 'data/label.csv')
     check_length(features, labels)
