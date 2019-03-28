@@ -1,4 +1,5 @@
 import json
+from sklearn.linear_model import LogisticRegression
 
 def read_train_data(file_path):
 	print('Read train data ' + '-' * 10)
@@ -12,6 +13,8 @@ def read_train_data(file_path):
 	assert(len(features) == len(labels))
 	return features, labels
 
+def logistic_model():
+	None
 
 if __name__ == '__main__':
 	features, labels = read_train_data('data/train.json')
