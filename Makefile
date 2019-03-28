@@ -6,6 +6,11 @@ file: file_preprocess.py
 preprocess: preprocess.py
 	$(PY) $<
 
+# logistic: Doing logistic regression
+logistic: logistic_regression.py
+	$(PY) $<
+
+# pipline
 train: train.py
 	$(PY) $<
 
