@@ -20,6 +20,7 @@ def read_train_data(file_path):
 	return features, labels
 
 def logistic_model(features, labels):
+	print('Train ' + '.' * 10)
 	X = []
 	Y = []
 	for i, j in zip(features, labels):
@@ -33,7 +34,8 @@ def logistic_model(features, labels):
 	print(X.shape)
 	model = LinearRegression()
 	model.fit(X, Y)
-	return None
+	print(model.score(X, Y))
+	return model
 
 if __name__ == '__main__':
 	features, labels = read_train_data('data/train.json')
