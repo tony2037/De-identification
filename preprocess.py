@@ -31,12 +31,17 @@ def read_labels(file_path = ''):
     return labels
 
 def check_length(features, labels):
+    x = []
+    y = []
     for i, j in zip(features, labels):
         print('feat len : %s' % str(len(i)))
         print('label len : %s' % str(len(j)))
-        assert(len(i) - 2 == len(j))
+        if(len(i) - 2 == len(j)):
+            x.append(i)
+            y.append(j)
+    return x, y
 
 if __name__ == '__main__':
     features, tokens = read_features(glob_condition = 'data/features/*.json')
     labels = read_labels(file_path = 'data/label.csv')
-    check_length(features, labels)
+    features, labels = check_length(features, labels)
