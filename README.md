@@ -1,6 +1,16 @@
 # De-identification
 de-identification NLP repo
 
+## Explanation
+* corpus: 王 小 明 想 要 借 錢
+        (Wang Xiao Ming wants to borrow some money)
+* label:  1  1  1 0  0  0  0
+  * 王小明 is a name, which is considered as sort of private information, and can used to identify the person, 王小明.
+  * 想要借錢: is not private information
+* word embedding:
+base on bert
+[CLS] 王 小 明 想 要 借 錢 [SEP]
+[768] * len(corpus + 2)
 ## Usage
 ### Install
 `make install`
