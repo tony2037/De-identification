@@ -16,3 +16,7 @@ train: train.py
 
 evaluate: evaluate.py
 	$(PY) $<
+
+# Install
+install: requirement.txt
+	pip3 install -r $<
