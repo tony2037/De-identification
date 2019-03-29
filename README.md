@@ -2,6 +2,8 @@
 de-identification NLP repo
 
 ## Usage
+### Install
+`make install`
 ### File preprocessing
 `make file`
 ### Data preprocessing
