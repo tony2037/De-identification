@@ -7,7 +7,14 @@ import numpy as np
 
 def split():
 	None
-
+'''
+Read train data from json file
+the format should be
+[ele, ele, ele ...]
+ele = {'features': (l + 2, 768), 'labels': (l,)}
+l: The length of corpus, +2 because of [CLS] [SEP] coming after going through bert
+@file_path: The path of json file
+'''
 def read_train_data(file_path):
 	print('Read train data ' + '-' * 10)
 	features = []
@@ -32,6 +39,11 @@ def read_train_data(file_path):
 	assert(len(features) == len(labels))
 	return features, labels, features_padding, labels_padding
 
+'''
+Using linear regression to fit
+@features: The input of the model, which are word embedding right here
+@labels: The output of the model, which are ground truth
+'''
 def logistic_model(features, labels):
 	print('Train ' + '.' * 10)
 	X = []
@@ -65,6 +77,9 @@ def logistic_model(features, labels):
 	print(model.score(X, Y))
 	return model, X_valid, Y_valid
 
+'''
+Calculate average of a list
+'''
 def average_list(l):
 	average = 0.
 	for i in l:
@@ -72,6 +87,13 @@ def average_list(l):
 	average = average / len(l)
 	return average
 
+'''
+Evaluate model with several common indicators
+@model: The model to be evaluated
+@X_valid: Features
+@Y_valid: Labels
+@labels_padding: The record of padding, which is used for removing padding
+'''
 def model_evaluate(model, X_valid, Y_valid, labels_padding):
 	np.seterr(all='raise') # Treat all warnings as exception
 	warnings.filterwarnings('error')
