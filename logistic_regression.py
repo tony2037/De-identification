@@ -5,21 +5,32 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, f1_score, matthews_corrcoef
 import numpy as np
 
+def split():
+	None
+
 def read_train_data(file_path):
 	print('Read train data ' + '-' * 10)
 	features = []
 	labels = []
+	features_padding = []
+	labels_padding = []
 	with open(file_path, 'r') as f:
 		data = json.loads(f.read())
 	for i in data:
+		if(len(i['features']) > 128 or len(i['labels']) > 128):
+			print('the length is bigger than 128')
+			split()
+			continue
 		features.append(i['features'])
 		labels.append(i['labels'])
+		features_padding.append(128 - len(features[-1]))
+		labels_padding.append(128 - len(labels[-1]))
 		for k in range(0, (128 - len(features[-1]))):
 			features[-1].append([0.]* len(features[-1][0]))
 		for k in range(0, (128 - len(labels[-1]))):
 			labels[-1].append(0.)
 	assert(len(features) == len(labels))
-	return features, labels
+	return features, labels, features_padding, labels_padding
 
 def logistic_model(features, labels):
 	print('Train ' + '.' * 10)
@@ -61,7 +72,7 @@ def average_list(l):
 	average = average / len(l)
 	return average
 
-def model_evaluate(model, X_valid, Y_valid):
+def model_evaluate(model, X_valid, Y_valid, labels_padding):
 	np.seterr(all='raise') # Treat all warnings as exception
 	warnings.filterwarnings('error')
 	accuracy = [] # accuracy
@@ -74,9 +85,18 @@ def model_evaluate(model, X_valid, Y_valid):
 	Y_predict = np.ceil(Y_predict)
 	Y_predict = np.asarray(Y_predict, dtype=np.int32)
 	Y_valid = np.asarray(Y_valid, dtype=np.int32)
-	for i, j in zip(Y_valid, Y_predict):
-		print(i)
-		print(j)
+
+	pred = np.array([]) # Prediction
+	ground = np.array([]) # Ground true
+	assert(Y_predict.shape[0] == Y_valid.shape[0])
+	for i, j, k in zip(Y_valid, Y_predict, labels_padding[-(Y_valid.shape[0]):]):
+		pred = np.append(pred, j[:-k])
+		ground = np.append(ground, i[:-k])
+	print(pred.shape)
+	print(ground.shape)
+	assert(pred.shape == ground.shape)
+	return accuracy_score(ground, pred), roc_auc_score(ground, pred), recall_score(ground, pred), f1_score(ground, pred), matthews_corrcoef(ground, pred)
+	'''
 		accuracy.append(accuracy_score(i, j))
 		try:
 			roc_auc.append(roc_auc_score(i, j))
@@ -109,8 +129,10 @@ def model_evaluate(model, X_valid, Y_valid):
 	print('The average f1 is %s' % str(average_f1))
 	print('The average mc is %s' % str(average_mc))
 	return average_acc, average_roc, average_recall, average_f1, average_mc
+	'''
 
 if __name__ == '__main__':
-	features, labels = read_train_data('data/train.json')
+	features, labels, features_padding, labels_padding = read_train_data('data/train.json')
 	model, X_valid, Y_valid = logistic_model(features, labels)
-	accurracy, roc, recall, f1, mc = model_evaluate(model, X_valid, Y_valid)
+	accurracy, roc, recall, f1, mc = model_evaluate(model, X_valid, Y_valid, labels_padding)
+	print('accuracy: %s\nROC: %s\nRecall: %s\nF1: %s\nMCC: %s' % (str(accurracy), str(roc), str(recall), str(f1), str(mc)))
