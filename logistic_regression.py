@@ -1,7 +1,8 @@
 import json
+import warnings
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, f1_score, matthews_corrcoef
 import numpy as np
 
 def read_train_data(file_path):
@@ -53,9 +54,23 @@ def logistic_model(features, labels):
 	print(model.score(X, Y))
 	return model, X_valid, Y_valid
 
+def average_list(l):
+	average = 0.
+	for i in l:
+		average += i
+	average = average / len(l)
+	return average
+
 def model_evaluate(model, X_valid, Y_valid):
-	accuracy = []
+	np.seterr(all='raise') # Treat all warnings as exception
+	warnings.filterwarnings('error')
+	accuracy = [] # accuracy
+	roc_auc = [] # Area under ROC curve
+	recall = [] # Rceall
+	f1 = [] # F1 score
+	mc = [] # Matthews_corrcoef
 	Y_predict = model.predict(X_valid)
+	Y_predict = Y_predict / np.linalg.norm(Y_predict)
 	Y_predict = np.ceil(Y_predict)
 	Y_predict = np.asarray(Y_predict, dtype=np.int32)
 	Y_valid = np.asarray(Y_valid, dtype=np.int32)
@@ -63,15 +78,39 @@ def model_evaluate(model, X_valid, Y_valid):
 		print(i)
 		print(j)
 		accuracy.append(accuracy_score(i, j))
-		print(accuracy[-1])
-	average_acc = 0.
-	for i in accuracy:
-		average_acc += i
-	average_acc = average_acc / len(accuracy)
+		try:
+			roc_auc.append(roc_auc_score(i, j))
+		except:
+			print('Ground true is all 0, cannot calculate ROC_AUC')
+			pass
+		try:
+			recall.append(recall_score(i, j))
+		except:
+			print('Devide 0')
+			pass
+		try:
+			f1.append(f1_score(i, j))
+		except:
+			print('Devide 0')
+			pass
+		try:
+			mc.append(matthews_corrcoef(i, j))
+		except:
+			print('Devide 0')
+			pass
+	average_acc = average_list(accuracy)
+	average_roc = average_list(roc_auc)
+	average_recall = average_list(recall)
+	average_f1 = average_list(f1)
+	average_mc = average_list(mc)
 	print('The average accurracy is %s' % str(average_acc))
-	return average_acc
+	print('The average ROC is %s' % str(average_roc))
+	print('The average recall is %s' % str(average_recall))
+	print('The average f1 is %s' % str(average_f1))
+	print('The average mc is %s' % str(average_mc))
+	return average_acc, average_roc, average_recall, average_f1, average_mc
 
 if __name__ == '__main__':
 	features, labels = read_train_data('data/train.json')
 	model, X_valid, Y_valid = logistic_model(features, labels)
-	accurracy = model_evaluate(model, X_valid, Y_valid)
+	accurracy, roc, recall, f1, mc = model_evaluate(model, X_valid, Y_valid)
