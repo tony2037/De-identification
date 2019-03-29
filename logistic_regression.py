@@ -2,7 +2,7 @@ import json
 import warnings
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, f1_score, matthews_corrcoef
+from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, f1_score, matthews_corrcoef, precision_score
 import numpy as np
 
 def split():
@@ -86,8 +86,8 @@ def model_evaluate(model, X_valid, Y_valid, labels_padding):
 	Y_predict = np.asarray(Y_predict, dtype=np.int32)
 	Y_valid = np.asarray(Y_valid, dtype=np.int32)
 
-	pred = np.array([]) # Prediction
-	ground = np.array([]) # Ground true
+	pred = np.array([], dtype=np.int32) # Prediction
+	ground = np.array([], dtype=np.int32) # Ground true
 	assert(Y_predict.shape[0] == Y_valid.shape[0])
 	for i, j, k in zip(Y_valid, Y_predict, labels_padding[-(Y_valid.shape[0]):]):
 		pred = np.append(pred, j[:-k])
@@ -97,10 +97,11 @@ def model_evaluate(model, X_valid, Y_valid, labels_padding):
 	print(pred)
 	print(ground)
 	assert(pred.shape == ground.shape)
-	return accuracy_score(ground, pred), roc_auc_score(ground, pred), recall_score(ground, pred), f1_score(ground, pred), matthews_corrcoef(ground, pred)
+	return accuracy_score(ground, pred), roc_auc_score(ground, pred), recall_score(ground, pred),\
+		f1_score(ground, pred), matthews_corrcoef(ground, pred), precision_score(ground, pred)
 
 if __name__ == '__main__':
 	features, labels, features_padding, labels_padding = read_train_data('data/train.json')
 	model, X_valid, Y_valid = logistic_model(features, labels)
-	accurracy, roc, recall, f1, mc = model_evaluate(model, X_valid, Y_valid, labels_padding)
-	print('accuracy: %s\nROC: %s\nRecall: %s\nF1: %s\nMCC: %s' % (str(accurracy), str(roc), str(recall), str(f1), str(mc)))
+	accurracy, roc, recall, f1, mc, precision = model_evaluate(model, X_valid, Y_valid, labels_padding)
+	print('accuracy: %s\nROC: %s\nRecall: %s\nF1: %s\nMCC: %s\nPrecision: %s' % (str(accurracy), str(roc), str(recall), str(f1), str(mc), str(precision)))
