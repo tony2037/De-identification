@@ -94,42 +94,10 @@ def model_evaluate(model, X_valid, Y_valid, labels_padding):
 		ground = np.append(ground, i[:-k])
 	print(pred.shape)
 	print(ground.shape)
+	print(pred)
+	print(ground)
 	assert(pred.shape == ground.shape)
 	return accuracy_score(ground, pred), roc_auc_score(ground, pred), recall_score(ground, pred), f1_score(ground, pred), matthews_corrcoef(ground, pred)
-	'''
-		accuracy.append(accuracy_score(i, j))
-		try:
-			roc_auc.append(roc_auc_score(i, j))
-		except:
-			print('Ground true is all 0, cannot calculate ROC_AUC')
-			pass
-		try:
-			recall.append(recall_score(i, j))
-		except:
-			print('Devide 0')
-			pass
-		try:
-			f1.append(f1_score(i, j))
-		except:
-			print('Devide 0')
-			pass
-		try:
-			mc.append(matthews_corrcoef(i, j))
-		except:
-			print('Devide 0')
-			pass
-	average_acc = average_list(accuracy)
-	average_roc = average_list(roc_auc)
-	average_recall = average_list(recall)
-	average_f1 = average_list(f1)
-	average_mc = average_list(mc)
-	print('The average accurracy is %s' % str(average_acc))
-	print('The average ROC is %s' % str(average_roc))
-	print('The average recall is %s' % str(average_recall))
-	print('The average f1 is %s' % str(average_f1))
-	print('The average mc is %s' % str(average_mc))
-	return average_acc, average_roc, average_recall, average_f1, average_mc
-	'''
 
 if __name__ == '__main__':
 	features, labels, features_padding, labels_padding = read_train_data('data/train.json')
