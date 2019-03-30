@@ -9,8 +9,8 @@ de-identification NLP repo
   * 想要借錢: is not private information
 * word embedding:
 base on bert
-[CLS] 王 小 明 想 要 借 錢 [SEP]
-[768] * len(corpus + 2)
+        * [CLS] 王 小 明 想 要 借 錢 [SEP]
+        * [768] * len(corpus + 2)
 ## Usage
 ### Install
 `make install`
