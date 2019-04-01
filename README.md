@@ -26,7 +26,7 @@ in `data/`, `train.json` is a set of data going through preprocessing (including
 
 
 ## Records
-### Regression
+### Logistic Regression
 Using 70% of data as train data
 The rest 30% as validation data
 ```
