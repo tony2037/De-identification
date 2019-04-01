@@ -44,7 +44,7 @@ Using linear regression to fit
 @features: The input of the model, which are word embedding right here
 @labels: The output of the model, which are ground truth
 '''
-def logistic_model(features, labels):
+def linear_model(features, labels):
 	print('Train ' + '.' * 10)
 	X = []
 	Y = []
@@ -73,6 +73,50 @@ def logistic_model(features, labels):
 	print('The X_train shape is %s' % str(X_train.shape))
 	print('The Y_train shape is %s' % str(Y_train.shape))
 	model = LinearRegression()
+	model.fit(X, Y)
+	print(model.score(X, Y))
+	return model, X_valid, Y_valid
+
+'''
+Using logistic regression to fit
+@features: The input of the model, which are word embedding right here
+@labels: The output of the model, which are ground truth
+'''
+def logistic_model(features, labels):
+	print('Train ' + '.' * 10)
+	X = []
+	Y = []
+	for i, j in zip(features, labels):
+		X.append(np.array(i, dtype=np.float32))
+		Y.append(np.array(j, dtype=np.float32))
+	X = np.asarray(X, dtype=np.float32)
+	Y = np.asarray(Y, dtype=np.float32)
+	print('The X and Y shape before reshape ...')
+	print(X.shape)
+	print(Y.shape)
+	X = X.reshape((X.shape[0], X.shape[1] * X.shape[2])) # Because sklearn only accept 2d input data
+	print('The shape after reshape')
+	print(X.shape)
+	print('The total data is %s' % str(X.shape[0]))
+	train_num = int(X.shape[0] * 0.7)
+	valid_num = X.shape[0] - train_num
+	X_train = X[:train_num]
+	X_valid = X[train_num:]
+	Y_train = Y[:train_num]
+	Y_valid = Y[train_num:]
+	X_train = X_train.flatten()
+	X_valid = X_valid.flatten()
+	Y_train = Y_train.flatten()
+	Y_valid = Y_valid.flatten()
+	print('The number of train set is %s' % str(train_num))
+	print('The number of valid set is %s' % str(valid_num))
+	print('The X_train shape is %s' % str(X_train.shape))
+	print('The Y_train shape is %s' % str(Y_train.shape))
+	assert(X_train.shape[0] == Y_train.shape[0])
+	assert(X_valid.shape[0] == Y_valid.shape[0])
+	print('The X_train shape is %s' % str(X_train.shape))
+	print('The Y_train shape is %s' % str(Y_train.shape))
+	model = LogisticRegression()
 	model.fit(X, Y)
 	print(model.score(X, Y))
 	return model, X_valid, Y_valid
@@ -124,6 +168,6 @@ def model_evaluate(model, X_valid, Y_valid, labels_padding):
 
 if __name__ == '__main__':
 	features, labels, features_padding, labels_padding = read_train_data('data/train.json')
-	model, X_valid, Y_valid = logistic_model(features, labels)
+	model, X_valid, Y_valid = linear_model(features, labels)
 	accurracy, roc, recall, f1, mc, precision = model_evaluate(model, X_valid, Y_valid, labels_padding)
 	print('accuracy: %s\nROC: %s\nRecall: %s\nF1: %s\nMCC: %s\nPrecision: %s' % (str(accurracy), str(roc), str(recall), str(f1), str(mc), str(precision)))
