@@ -50,7 +50,7 @@ def PNcount(labels):
 			else:
 				print('label error')
 				exit(-1)
-	print('Positive sameples: %s\nNegative samples: %s' %(str(positive_number), str(negative_number)))
+	print('Positive samples: %s\nNegative samples: %s' %(str(positive_number), str(negative_number)))
 	return positive_number, negative_number
 
 def PNsentences(sentences, labels):
