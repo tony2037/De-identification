@@ -39,10 +39,23 @@ def check_consistency(sentences, labels):
 	return True
 
 def PNcount(labels):
-	None	
+	positive_number = 0
+	negative_number = 0
+	for i in labels:
+		for j in i:
+			if(j == 1):
+				positive_number += 1
+			elif (j == 0):
+				negative_number += 1
+			else:
+				print('label error')
+				exit(-1)
+	print('Positive sameples: %s\nNegative samples: %s' %(str(positive_number), str(negative_number)))
+	return positive_number, negative_number
 
 if __name__ == '__main__':
 	labels = read_labels('data/label.csv')
 	sentences = read_raw('data/raw/*.sentence')
 	consistency = check_consistency(sentences, labels)
 	print(('not consist', 'consist')[consistency])
+	positive_number, negative_number = PNcount(labels)
