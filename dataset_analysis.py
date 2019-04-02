@@ -13,8 +13,8 @@ def read_labels(filename = 'data/label.csv'):
 	with open(filename, newline = '') as f:
 		raw = csv.reader(f)
 		for i in raw:
-			labels.append(i)
-			print(i)
+			labels.append([int(j) for j in i])
+			print(labels[-1])
 	return labels
 
 def read_raw(glob_condition = ''):
@@ -29,7 +29,7 @@ def read_raw(glob_condition = ''):
 	return sentences
 
 def check_consistency(sentences, labels):
-	print('Check raw data and labels are matched to each other')
+	print('Check raw data and labels are matched to each other ?')
 	for i, j in zip(sentences, labels):
 		if(len(i) != len(j)):
 			print('is not consist')
@@ -38,7 +38,11 @@ def check_consistency(sentences, labels):
 			return False
 	return True
 
+def PNcount(labels):
+	None	
+
 if __name__ == '__main__':
 	labels = read_labels('data/label.csv')
 	sentences = read_raw('data/raw/*.sentence')
 	consistency = check_consistency(sentences, labels)
+	print(('not consist', 'consist')[consistency])
