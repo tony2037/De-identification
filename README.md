@@ -37,3 +37,16 @@ F1: 0.20689655172413793
 MCC: 0.3097075252160898
 Precision: 0.11538461538461539
 ```
+
+## Dataset analysis
+### Use `dataset_analysis.py` to check details
+`make statisitcs`
+### The details
+```
+Positive sameples: 2128
+Negative samples: 160573
+positive_sentences: 297
+negative_sentences: 670
+average proportion of overall: 0.02643522579731593
+average proportion of only positive sentences: 0.08607024695624413
+```
