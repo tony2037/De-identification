@@ -10,6 +10,10 @@ preprocess: preprocess.py
 logistic: logistic_regression.py
 	$(PY) $<
 
+# dataset analysis
+statistics: dataset_analysis.py
+	$(PY) $<
+
 # pipline
 train: train.py
 	$(PY) $<
