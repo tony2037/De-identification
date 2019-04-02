@@ -53,9 +53,37 @@ def PNcount(labels):
 	print('Positive sameples: %s\nNegative samples: %s' %(str(positive_number), str(negative_number)))
 	return positive_number, negative_number
 
+def PNsentences(sentences, labels):
+	positive_sentences = []
+	negative_sentences = []
+	proportions = []
+	for s, l in zip(sentences, labels):
+		if(1 in l):
+			proportions.append(l.count(1) / len(l))
+			positive_sentences.append((s, l))
+		else:
+			proportions.append(0)
+			negative_sentences.append((s, l))
+	print('positive_sentences: %s\nnegative_sentences: %s' %(str(len(positive_sentences)), str(len(negative_sentences))))
+	return positive_sentences, negative_sentences, proportions
+
+def proportion_detail(proportions):
+	avg_overall = 0.
+	avg_positive = 0.
+	for p in proportions:
+		avg_overall = avg_overall + p
+		if (p is not 0):
+			avg_positive = avg_positive + p
+	avg_overall = avg_overall / len(proportions)
+	avg_positive = avg_positive/ (len(proportions) - proportions.count(0))
+	print('average proportion of overall: %s\naverage proportion of only positive sentences: %s' %(str(avg_overall), str(avg_positive)))
+	return avg_overall, avg_positive
+
 if __name__ == '__main__':
 	labels = read_labels('data/label.csv')
 	sentences = read_raw('data/raw/*.sentence')
 	consistency = check_consistency(sentences, labels)
 	print(('not consist', 'consist')[consistency])
 	positive_number, negative_number = PNcount(labels)
+	positive_sentences, negative_sentences, proportions = PNsentences(sentences, labels)
+	proportion_overall, proportion_positive = proportion_detail(proportions)
