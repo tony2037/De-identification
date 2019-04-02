@@ -19,7 +19,10 @@ def read_labels(filename = 'data/label.csv'):
 
 def read_raw(glob_condition = ''):
 	sentences = []
-	for i in glob(glob_condition):
+	targets = glob(glob_condition)
+	targets.sort(key = lambda x: int(x.split('/')[-1].split('.')[-2]))
+	for i in targets:
+		print('Read: %s ...' % i)
 		with open(i, 'r') as f:
 			sentences.append(f.read())
 			print(sentences[-1])
