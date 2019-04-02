@@ -28,10 +28,14 @@ def read_raw(glob_condition = ''):
 def check_consistency(sentences, labels):
 	print('Check raw data and labels are matched to each other')
 	for i, j in zip(sentences, labels):
-		print(type(i))
-		print(type(j))
+		if(len(i) != len(j)):
+			print('is not consist')
+			print('Raw data(sentence) length: %s' % str(len(i)))
+			print('Label length: %s' % str(len(j)))
+			return False
+	return True
 
 if __name__ == '__main__':
 	labels = read_labels('data/label.csv')
 	sentences = read_raw('data/raw/*.sentence')
-	check_consistency(sentences, labels)
+	consistency = check_consistency(sentences, labels)
