@@ -56,3 +56,11 @@ def read_data(ask = False):
 	else:
 		print('Fail. inconsistent')
 		return False
+
+def read_dataset(train_json, valid_json):
+	with open(train_json, 'r') as f:
+		train = json.loads(f.read())
+		f.close()
+	with open(valid_json, 'r') as f:
+		valid = json.loads(f.read())
+		f.close()
