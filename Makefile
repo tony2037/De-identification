@@ -14,6 +14,10 @@ logistic: logistic_regression.py
 statistics: dataset_analysis.py
 	$(PY) $<
 
+# split samples into train/valid dataset
+split: split.py
+	$(PY) $<
+
 # pipline
 train: train.py
 	$(PY) $<
