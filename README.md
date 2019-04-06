@@ -55,3 +55,40 @@ where:
 * Positive sentences stand for those sentences containing positive samples (positive characters), while negative stand for opposite side
 * average proportion of overall: Take all porportions in consideration
 * average proportion of only positive sentences: Take only positive sentences in account
+
+## Dataset splitting
+Split all of samples into train/valid with specific ratio(default : 0.7 / 0.3)
+### `split.py`
+```
+make split
+```
+### Format
+Under `data/` should be a `DEID/` directory,
+in which contains three files:
+#### config.json
+```
+{
+"train":
+        {"positives": number, "negatives": number}
+"valid":
+        {"positives": number, "negatives": number}
+}
+```
+eg.
+```
+{"train": {"positives": 207, "negatives": 468}, "valid": {"positives": 90, "negatives": 202}}
+```
+### train.json
+```
+{
+'positives': [(sentences, labels), (), (), ...]
+'negatives': [(snetences, labels), (), (), ...]
+}
+```
+### valid.json
+```
+{
+'positives': [(sentences, labels), (), (), ...]
+'negatives': [(snetences, labels), (), (), ...]
+}
+```
