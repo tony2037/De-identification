@@ -52,7 +52,7 @@ if __name__ == '__main__':
 			'negatives' : train_negatives},\
 			 	f, ensure_ascii = False)
 		f.close()
-	with open(os.path.join(dataset_path, 'valid,json'), 'w') as f:
+	with open(os.path.join(dataset_path, 'valid.json'), 'w') as f:
 		json.dump({'positives' : valid_positives,\
 			'negatives' : valid_negatives},\
 			 	f, ensure_ascii = False)
