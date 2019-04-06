@@ -65,7 +65,7 @@ make split
 ### Format
 Under `data/` should be a `DEID/` directory,
 in which contains three files:
-#### config.json
+#### `config.json`
 ```
 {
 "train":
@@ -78,14 +78,14 @@ eg.
 ```
 {"train": {"positives": 207, "negatives": 468}, "valid": {"positives": 90, "negatives": 202}}
 ```
-### train.json
+### `train.json`
 ```
 {
 'positives': [(sentences, labels), (), (), ...]
 'negatives': [(snetences, labels), (), (), ...]
 }
 ```
-### valid.json
+### `valid.json`
 ```
 {
 'positives': [(sentences, labels), (), (), ...]
