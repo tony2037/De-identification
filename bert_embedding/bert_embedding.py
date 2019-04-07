@@ -1,5 +1,6 @@
 import threading
-import sys, os
+import multiprocessing
+import sys, os, time
 from bert_serving.client import BertClient
 
 def server_activate():
@@ -8,3 +9,6 @@ def server_activate():
 
 def client_activate():
 	return BertClient()
+
+def server_terminate(server):
+	server.terminate() 
