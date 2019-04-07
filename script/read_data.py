@@ -64,3 +64,4 @@ def read_dataset(train_json, valid_json):
 	with open(valid_json, 'r') as f:
 		valid = json.loads(f.read())
 		f.close()
+	return train['positives'] + train['negatives'], valid['positives'] + valid['negatives']

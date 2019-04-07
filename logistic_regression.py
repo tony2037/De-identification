@@ -1,5 +1,5 @@
 import json
-import warnings
+from script.read_data import read_dataset 
 from sklearn.linear_model import LinearRegression
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, roc_auc_score, recall_score, f1_score, matthews_corrcoef, precision_score
@@ -167,7 +167,4 @@ def model_evaluate(model, X_valid, Y_valid, labels_padding):
 		f1_score(ground, pred), matthews_corrcoef(ground, pred), precision_score(ground, pred)
 
 if __name__ == '__main__':
-	features, labels, features_padding, labels_padding = read_train_data('data/train.json')
-	model, X_valid, Y_valid = linear_model(features, labels)
-	accurracy, roc, recall, f1, mc, precision = model_evaluate(model, X_valid, Y_valid, labels_padding)
-	print('accuracy: %s\nROC: %s\nRecall: %s\nF1: %s\nMCC: %s\nPrecision: %s' % (str(accurracy), str(roc), str(recall), str(f1), str(mc), str(precision)))
+	train, valid = read_dataset('', '')
